@@ -7,13 +7,12 @@ tags: 阿里云
 
 对服务器内存有要求 , 如果内存小于 4g 会卡顿甚至连接不上服务器或者 gitlab 显示 502 访问慢等问题。
 
-
-# 环境：
+## 环境
 
 - centos 8 亲测
 - 本地 mac 10.15.6
 
-# ssh 无密码登录
+## ssh 无密码登录
 
 步骤一：
 登录阿里云 ECS 实例 ， 创建密钥对。
@@ -26,7 +25,7 @@ tags: 阿里云
 然后在本地终端运行命令： chmod 400 [.pem 私钥文件在本地机上的存储路径]，
 然后使用 ssh 命令连接远程实例： ssh -i [.pem 私钥文件在本地机上的存储路径] root@[公网 IP 地址]，
 
-# ssh 配置文件
+## ssh 配置文件
 
 每次连接命令输入有点长， 我们可以配置下 config 文件 来达到简短的命令输入：
 
@@ -47,7 +46,7 @@ tags: 阿里云
 步骤二：
 打开本地终端 ， 输入 ssh 连接命令即可， 例如： ssh [ECS 实例的名称，也就是你 config 中的 host 的值]
 
-# 远程登录 实例后 ， 我们准备安装 docker
+## 远程登录 实例后 ， 我们准备安装 docker
 
 关于 docker 的概念 ， 可以自行查阅 ，这里不细说。
 
@@ -89,17 +88,20 @@ tags: 阿里云
 ```
 
 保存后 ， 更新下这个文件(每次修改后都必要更新和重启docker)。
+
 ```bash
   systemctl daemon-reload
 ```
 
 安装 docker-ce：
+
 ```bash
   yum install docker-ce # 或者使用 dnf -y  install docker-ce --nobest
 ```
 
 安装后 ， 如果你不是root用户 ， 那么使用docker都需要 sudo 来使用。
 如果需要省略 sudo ，需要将用户添加到 docker 组。
+
 ```bash
   sudo usermod -aG docker USER_NAME
 ```
@@ -124,7 +126,7 @@ tags: 阿里云
 
 可以看到我们自定义的配置文件生效了。
 
-# docker 安装 gitlab
+## docker 安装 gitlab
 
 查看gitlab镜像：
 
@@ -133,11 +135,13 @@ tags: 阿里云
 ```
 
 安装 gitlab(这里备注下： 官方的这个镜像安装之后docker启动后无法访问，看了日志报错是: Chef encountered an error attempting to load the node data for , 找不到解决办法 ，最后无奈删除这个镜像 ， 使用了 twang2218/gitlab-ce-zh 汉化版镜像)：
+
 ```bahs
   docker pull twang2218/gitlab-ce-zh
 ```
 
 检查是否下载了这个镜像：
+
 ```bash
   docker images
 ```
@@ -156,24 +160,23 @@ docker 运行 gitlab ：
     gitlab/gitlab-ce:latest
 ```
 
- - --detach：后台运行容器
- - --publish：端口映射，容器端口如何映射到宿主机（本文指我们的 Mac 电脑）端口
- - --name：指定容器的名称，这里我们指定容器名称为 gitlab
- - --restart always：设置当宿主机重启后，容器也会重启
- - --volume：这里使用 bind mount 的方式，设置 gitlab 容器的数据保存在目录 /home/gitlab/ 下
+- --detach：后台运行容器
+- --publish：端口映射，容器端口如何映射到宿主机（本文指我们的 Mac 电脑）端口
+- --name：指定容器的名称，这里我们指定容器名称为 gitlab
+- --restart always：设置当宿主机重启后，容器也会重启
+- --volume：这里使用 bind mount 的方式，设置 gitlab 容器的数据保存在目录 /home/gitlab/ 下
 
 config 文件夹保存 gitlab 配置
 logs 文件夹保存 gitlab 输出日志
 data 文件夹保存 gitlab 应用数据
 
-
-输入以上命令后 ，返回一串字符串代表 docker 镜像启动成功了。 
+输入以上命令后 ，返回一串字符串代表 docker 镜像启动成功了。
 访问你需要在阿里云服务器把对应的安全组端口打开。
 
 接下来我们来改一下 gitlab 的配置文件， 我们通过 volume 参数， 把 数据都存在目录 home/gitlab处，所以我们进入这个目录， 找到config下的gitlab.rb 文件,然后修改以下字段：
 
 ```bash
-  external_url 'http://127.0.0.1' # 不加端口号 默认 80 
+  external_url 'http://127.0.0.1' # 不加端口号 默认 80
 ```
 
 接着再修改一些配置来优化我们的gitlab：

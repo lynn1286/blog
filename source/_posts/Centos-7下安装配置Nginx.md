@@ -7,14 +7,14 @@ tags: 阿里云
 
 本文基于Centos 7下安装配置Nginx操作实践记录整理。
 
-# 一、配置 EPEL源
+## 一、配置 EPEL源
 
 ```bash
     sudo yum install -y epel-release
     sudo yum -y update
 ```
 
-# 二、安装Nginx
+## 二、安装Nginx
 
 ```bash
     sudo yum install -y nginx
@@ -26,7 +26,7 @@ tags: 阿里云
 
 自定义配置文件目录为: /etc/nginx/conf.d/
 
-# 三、开启端口80和443
+## 三、开启端口80和443
 
 如果你的服务器打开了防火墙，你需要运行下面的命令，打开80和443端口。
 
@@ -44,7 +44,7 @@ tags: 阿里云
 
 优先级： 优先级可选范围为1-100，默认值为1，即最高优先级。
 
-# 四、操作Nginx
+## 四、操作Nginx
 
 nginx 操作命令备注：
 
@@ -68,11 +68,11 @@ nginx 操作命令备注：
     systemctl disable nginx
 ```
 
-# 五、配置Nginx
+## 五、配置Nginx
 
-1. 安装Https免费证书(以阿里云域名为例)
+### 安装Https免费证书(以阿里云域名为例)
 
-一键安装acme.sh
+一键安装 acme.sh
 
 ```bash
     curl https://get.acme.sh | sh
@@ -88,7 +88,7 @@ nginx 操作命令备注：
     acme.sh --issue --dns dns_ali -d domain
 ```
 
-其中： 
+其中：
 
 点击阿里云后台，右上角用户头像，菜单中选择accesskeys。
 
@@ -111,7 +111,7 @@ https证书拷贝成功。
 
 目前https证书在 60 天以后会自动更新, 你无需任何操作. 今后有可能会缩短这个时间, 不过都是自动的, 你不用关心.
 
-2. 配置nginx
+### 配置nginx
 
 删除/etc/nginx/nginx.conf中的server部分代码。
 
@@ -150,4 +150,4 @@ root /usr/share/nginx/html; 表示网站文件目录，后面的分号不可省�
 
 ssl_certificate和ssl_certificate_key 指向https证书。
 
-error_page 497 https://hosturi?$args; 这句的作用是，强制http跳转到https。
+error_page 497 <https://hosturi?$args>; 这句的作用是，强制http跳转到https。
