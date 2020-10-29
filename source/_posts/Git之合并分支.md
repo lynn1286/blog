@@ -1,6 +1,7 @@
 ---
 title: Git之合并分支
 date: 2020-10-28 16:03:49
+categories: Git
 tags: Git 学习
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: Git之修改commit的message
 date: 2020-10-28 16:02:39
+categories: Git
 tags: Git 学习
 ---
 

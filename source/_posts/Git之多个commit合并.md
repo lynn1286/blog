@@ -1,6 +1,7 @@
 ---
 title: Git之多个commit合并
 date: 2020-10-28 14:57:58
+categories: Git
 tags:  Git 学习
 ---
 
